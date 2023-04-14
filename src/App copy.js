@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { OpenSeaDragonViewer } from './OpenSeaDragon';
-const App = () => {
+
+function App() {
   const [images, setImages] = useState([]);
-const getImages = async () => {
+  const [selectedImage, setSelectedImage] = useState();
+  const selectImage = (slide) => {
+    setSelectedImage(slide.slide);
+  };
+  const getImages = async () => {
       const response = await fetch("https://openslide-demo.s3.dualstack.us-east-1.amazonaws.com/info.json")
       let image = await response.json();
       setImages(image.groups)
     };
-useEffect(() => {
+  useEffect(() => {
       getImages();
     }, []);
-const [selectedImage, setSelectedImage] = useState();
-const selectImage = (slide) => {
-    setSelectedImage(slide.slide);
-  };
   return (
     <div 
     className="App"
@@ -50,9 +51,10 @@ const selectImage = (slide) => {
            })}
      </div>
      <div>
-      <OpenSeaDragonViewer image={selectedImage} />
+         <OpenSeaDragonViewer image={selectedImage} />
      </div>
    </div>
     );
   }
+
 export default App;
